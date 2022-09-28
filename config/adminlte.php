@@ -295,6 +295,7 @@ return [
             'text' => 'Iglesias',
             'url' => 'churches',
             'icon' => 'fas fa-church mr-2',
+            'can' => ['is-admin'],
         ],
         [
             'text' => 'Miembros',
