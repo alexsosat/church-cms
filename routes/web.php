@@ -22,26 +22,29 @@ Auth::routes();
 Route::middleware('auth')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 
-    Route::group(['prefix' => 'churches', 'as' => 'churches.', 'namespace' => 'App\Http\Controllers'], function () {
-        Route::get('/', [App\Http\Controllers\ChurchController::class, 'index']);
-        Route::get('/create', ['as' => 'create', 'uses' => 'ChurchController@create']);
+    Route::middleware('can:is-admin')->group(function () {
+        Route::group(['prefix' => 'churches', 'as' => 'churches.', 'namespace' => 'App\Http\Controllers'], function () {
+            Route::get('/', [App\Http\Controllers\ChurchController::class, 'index']);
+            Route::get('/create', ['as' => 'create', 'uses' => 'ChurchController@create']);
 
-        Route::prefix('/{user:id}')->group(function () {
-            Route::get('/edit', ['as' => 'edit', 'uses' => 'ChurchController@edit']);
+            Route::prefix('/{user:id}')->group(function () {
+                Route::get('/edit', ['as' => 'edit', 'uses' => 'ChurchController@edit']);
 
 
-            Route::patch('/update_info', ['as' => 'updateInfo', 'uses' => 'ChurchController@updateInfo']);
-            Route::patch('/update_credentials', ['as' => 'updateCredentials', 'uses' => 'ChurchController@updateCredentials']);
-            Route::patch('/update_geo', ['as' => 'updateGeo', 'uses' => 'ChurchController@updateGeo']);
+                Route::patch('/update_info', ['as' => 'updateInfo', 'uses' => 'ChurchController@updateInfo']);
+                Route::patch('/update_credentials', ['as' => 'updateCredentials', 'uses' => 'ChurchController@updateCredentials']);
+                Route::patch('/update_geo', ['as' => 'updateGeo', 'uses' => 'ChurchController@updateGeo']);
 
+
+            });
+
+            Route::post('/store', ['as' => 'store', 'uses' => 'ChurchController@store']);
+
+            Route::delete('/delete', ['as' => 'delete', 'uses' => 'ChurchController@destroy']);
 
         });
-
-        Route::post('/store', ['as' => 'store', 'uses' => 'ChurchController@store']);
-
-        Route::delete('/delete', ['as' => 'delete', 'uses' => 'ChurchController@destroy']);
-
     });
+
 
     Route::group(['prefix' => 'members', 'as' => 'members.', 'namespace' => 'App\Http\Controllers'], function () {
         Route::get('/', [App\Http\Controllers\MemberController::class, 'index']);
@@ -52,8 +55,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/edit', ['as' => 'edit', 'uses' => 'MemberController@edit']);
 
             Route::patch('/update', ['as' => 'update', 'uses' => 'MemberController@update']);
-
-
         });
 
         Route::post('/store', ['as' => 'store', 'uses' => 'MemberController@store']);

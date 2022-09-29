@@ -106,7 +106,6 @@
 
 @section('js')
 
-    // round image previewer
     <script>
         $(document).ready(function (e) {
 

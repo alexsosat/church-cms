@@ -107,7 +107,6 @@
 @section('js')
     <script src="{{asset("js/jquery.inputmask.min.js")}}"></script>
 
-    // round image previewer
     <script>
         $(document).ready(function (e) {
             $('[data-mask]').inputmask();

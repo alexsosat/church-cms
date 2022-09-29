@@ -27,5 +27,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('is-admin', [AdminPolicy::class, 'action']);
+        Gate::define('edit-member', [AdminPolicy::class, 'editMember']);
     }
 }

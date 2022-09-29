@@ -6,6 +6,8 @@ use App\Helper\Media;
 use App\Models\Member;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class MemberController extends Controller
@@ -14,18 +16,34 @@ class MemberController extends Controller
 
     public function index()
     {
+        $user = User::find(Auth::id());
+        $members = Member::select();
+
+        if (!Gate::allows('is-admin')) {
+            $members = $members->where('user_id', $user->id);
+        }
+
         return view('member.index')->with([
-            'Members' => Member::select()->get()
+            'Members' => $members->get(),
         ]);
     }
 
     public function show(Member $Member)
     {
+        Gate::authorize('edit-member', $Member);
+
         return view('member.show', compact('Member'));
     }
 
     public function store(Request $request)
     {
+        $user = User::find(Auth::id());
+
+        if ($request->user_id !== $user->id && !Gate::allows('is-admin')) {
+            return redirect()->back()->withErrors(['msg' => 'Error al crear el miembro']);
+        }
+
+
         $image_path = null;
         if ($file = $request->file('image')) {
             $fileData = $this->uploads($file, 'members/', $request->name);
@@ -48,20 +66,38 @@ class MemberController extends Controller
 
     public function create()
     {
+        $user = User::find(Auth::id());
+        $Churches = User::select()->where("role_id", "=", "2");
+
+        if (!Gate::allows('is-admin')) {
+            $Churches = $Churches->where('id', $user->id);
+        }
+
         return view('member.create')->with([
-            'Churches' => User::select()->where("role_id", "=", "2")->get()
+            'Churches' => $Churches->get(),
         ]);
     }
 
     public function edit(Member $Member)
     {
+        Gate::authorize('edit-member', $Member);
+
+        $user = User::find(Auth::id());
+        $Churches = User::select()->where("role_id", "=", "2");
+
+        if (!Gate::allows('is-admin')) {
+            $Churches = $Churches->where('id', $user->id);
+        }
+
         return view('member.edit', compact('Member'))->with([
-            'Churches' => User::select()->where("role_id", "=", "2")->get()
+            'Churches' => $Churches->get(),
         ]);
     }
 
     public function update(Request $request, Member $Member)
     {
+        Gate::authorize('edit-member', $Member);
+
         if ($file = $request->file('image')) {
             if ($Member->imagePath() != null) {
                 if (Storage::disk('public')->exists($Member->imagePath())) {
