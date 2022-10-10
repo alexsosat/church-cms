@@ -73,7 +73,7 @@ class MemberController extends Controller
             $Churches = $Churches->where('id', $user->id);
         }
 
-        return view('member.create')->with([
+        return view('member.create.php')->with([
             'Churches' => $Churches->get(),
         ]);
     }

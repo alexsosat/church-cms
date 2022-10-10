@@ -7,18 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 class Request extends Model
 {
     protected $fillable = [
-        'user_from_id',
-        'user_to_id',
+        'requesting_user_id',
+        'authorizing_user_id',
         'status',
+        'type',
+        'member_id',
     ];
 
-    public function userFrom()
+    public function member()
     {
-        return $this->belongsTo(User::class, 'user_from_id');
+        return $this->belongsTo(Member::class, 'member_id');
     }
 
-    public function userTo()
+    public function requester()
     {
-        return $this->belongsTo(User::class, 'user_to_id');
+        return $this->belongsTo(User::class, 'requesting_user_id');
     }
+
+    public function authorizer()
+    {
+        return $this->belongsTo(User::class, 'authorizing_user_id');
+    }
+    
 }

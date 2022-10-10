@@ -31,9 +31,9 @@ Route::middleware('auth')->group(function () {
                 Route::get('/edit', ['as' => 'edit', 'uses' => 'ChurchController@edit']);
 
 
-                Route::patch('/update_info', ['as' => 'updateInfo', 'uses' => 'ChurchController@updateInfo']);
-                Route::patch('/update_credentials', ['as' => 'updateCredentials', 'uses' => 'ChurchController@updateCredentials']);
-                Route::patch('/update_geo', ['as' => 'updateGeo', 'uses' => 'ChurchController@updateGeo']);
+                Route::patch('/update-info', ['as' => 'updateInfo', 'uses' => 'ChurchController@updateInfo']);
+                Route::patch('/update-credentials', ['as' => 'updateCredentials', 'uses' => 'ChurchController@updateCredentials']);
+                Route::patch('/update-geo', ['as' => 'updateGeo', 'uses' => 'ChurchController@updateGeo']);
 
 
             });
@@ -61,13 +61,26 @@ Route::middleware('auth')->group(function () {
 
     });
 
+    Route::group(['prefix' => 'requests', 'as' => 'requests.', 'namespace' => 'App\Http\Controllers'], function () {
+        Route::get('/', [App\Http\Controllers\RequestController::class, 'index']);
+        Route::get('/create-sending-request', ['as' => 'create-sending-request', 'uses' => 'RequestController@createSendingRequest']);
+        Route::get('/create-receiving-request', ['as' => 'create-receiving-request', 'uses' => 'RequestController@createReceivingRequest']);
+
+        Route::patch('/single-request-action', ['as' => 'single-request-action', 'uses' => 'RequestController@singleRequestAction']);
+        Route::patch('/single-request-cancel', ['as' => 'single-request-cancel', 'uses' => 'RequestController@singleRequestCancel']);
+
+
+        Route::post('/store-sending-request', ['as' => 'store-sending-request', 'uses' => 'RequestController@storeSendingRequest']);
+
+    });
+
     Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'App\Http\Controllers'], function () {
         Route::get('/', [App\Http\Controllers\ProfileController::class, 'show']);
 
-        Route::patch('/update_info', ['as' => 'update_info', 'uses' => 'ProfileController@updateInfo']);
-        Route::patch('/update_password', ['as' => 'update_password', 'uses' => 'ProfileController@updatePsswd']);
-        Route::patch('/update_credentials', ['as' => 'update_credentials', 'uses' => 'ProfileController@updateCredentials']);
-        Route::patch('/update_geo', ['as' => 'update_geo', 'uses' => 'ProfileController@updateGeo']);
+        Route::patch('/update-info', ['as' => 'update_info', 'uses' => 'ProfileController@updateInfo']);
+        Route::patch('/update-password', ['as' => 'update_password', 'uses' => 'ProfileController@updatePsswd']);
+        Route::patch('/update-credentials', ['as' => 'update_credentials', 'uses' => 'ProfileController@updateCredentials']);
+        Route::patch('/update-geo', ['as' => 'update_geo', 'uses' => 'ProfileController@updateGeo']);
 
     });
 

@@ -302,6 +302,11 @@ return [
             'url' => 'members',
             'icon' => 'fas fa-users mr-2',
         ],
+        [
+            'text' => 'Solicitudes',
+            'url' => 'requests',
+            'icon' => 'fas fa-file-alt mr-2',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

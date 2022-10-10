@@ -50,5 +50,20 @@ class UsersTableSeeder extends Seeder
             'updated_at' => now(),
             'role_id' => 2,
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'Iglesia Central',
+            'username' => 'um',
+            'email' => 'um@gmail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('secret'),
+            'phone' => "1234567890",
+            'state' => "Sonora",
+            'municipality' => "Hermosillo",
+            'address' => "Calle 1 # 2 Col. 345",
+            'created_at' => now(),
+            'updated_at' => now(),
+            'role_id' => 2,
+        ]);
     }
 }

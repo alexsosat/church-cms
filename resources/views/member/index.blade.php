@@ -88,7 +88,8 @@
                                     <span class="badge badge-warning">Inactivo</span>
                                 @else
                                     <span class="badge badge-secondary">Defunción</span>
-                            @endif
+                                @endif
+                            </td>
                             <td class="align-middle">
 
                                 <a href="{{ route('members.show', $Member->id) }}"
@@ -97,8 +98,6 @@
                                 <a href="{{ route('members.edit', $Member->id) }}"
                                    class="btn btn-primary btn-sm">Editar</a>
 
-
-                                </form>
                             </td>
                         </tr>
 

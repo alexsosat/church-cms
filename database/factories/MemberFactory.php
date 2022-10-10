@@ -13,7 +13,7 @@ class MemberFactory extends Factory
             "status" => $this->faker->numberBetween(0, 2),
             "is_baptized" => $this->faker->boolean(),
             "baptized_date" => $this->faker->date(),
-            "user_id" => $this->faker->numberBetween(2, 3),
+            "user_id" => $this->faker->numberBetween(2, 4),
         ];
 
     }

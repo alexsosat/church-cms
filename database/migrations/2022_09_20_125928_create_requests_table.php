@@ -10,11 +10,21 @@ return new class extends Migration {
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
 
-            $table->bigInteger('user_from_id')->unsigned();
-            $table->foreign('user_from_id')->references('id')->on('users')->onDelete('cascade');
+            // 1-> Sending, 2-> Receiving
+            $table->integer('type')->unsigned();
 
-            $table->bigInteger('user_to_id')->unsigned();
-            $table->foreign('user_to_id')->references('id')->on('users')->onDelete('cascade');
+            // 1-> Accepted, 0 -> Rejected, 2 -> Pending, 3-> Cancelled
+            $table->integer('status')->unsigned();
+
+            $table->bigInteger('member_id')->unsigned();
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
+
+
+            $table->bigInteger('requesting_user_id')->unsigned();
+            $table->foreign('requesting_user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->bigInteger('authorizing_user_id')->unsigned();
+            $table->foreign('authorizing_user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
         });
