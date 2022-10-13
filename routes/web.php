@@ -67,10 +67,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/create-receiving-request', ['as' => 'create-receiving-request', 'uses' => 'RequestController@createReceivingRequest']);
 
         Route::patch('/single-request-action', ['as' => 'single-request-action', 'uses' => 'RequestController@singleRequestAction']);
+        Route::patch('/multiple-request-action', ['as' => 'multiple-request-action', 'uses' => 'RequestController@multipleRequestAction']);
         Route::patch('/single-request-cancel', ['as' => 'single-request-cancel', 'uses' => 'RequestController@singleRequestCancel']);
 
 
         Route::post('/store-sending-request', ['as' => 'store-sending-request', 'uses' => 'RequestController@storeSendingRequest']);
+        Route::post('/store-receiving-request', ['as' => 'store-receiving-request', 'uses' => 'RequestController@storeReceivingRequest']);
 
     });
 

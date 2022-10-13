@@ -16,10 +16,10 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('requests.store-sending-request') }}" method="POST">
+                        <form action="{{ route('requests.store-receiving-request') }}" method="POST">
                             @csrf
                             @method('Post')
-                            <h3>Formulario</h3>
+                            <h3>Formulario de Recepción de Miembros</h3>
                             <hr/>
 
 
@@ -100,7 +100,7 @@
             if (churchSelect.value != 0) {
                 options = members.filter(member => member.church_id == churchSelect.value);
             }
-            
+
 
             let str = "";
             for (const item of options) {

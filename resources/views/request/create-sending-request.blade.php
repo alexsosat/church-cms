@@ -19,7 +19,7 @@
                         <form action="{{ route('requests.store-sending-request') }}" method="POST">
                             @csrf
                             @method('Post')
-                            <h3>Formulario</h3>
+                            <h3>Formulario de Envío de Miembros</h3>
                             <hr/>
                             <div class="form-group">
                                 <label for="member">Miembros</label>
@@ -69,7 +69,7 @@
             });
 
             $('.js-example-basic-single').select2();
-            
+
 
         });
     </script>

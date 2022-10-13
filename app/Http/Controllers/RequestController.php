@@ -64,6 +64,26 @@ class RequestController extends Controller
         return redirect('/requests')->with('success', 'Solicitudes enviadas');
     }
 
+    public function storeReceivingRequest(\Illuminate\Http\Request $request)
+    {
+
+        foreach ($request->members as $member) {
+            $user_id = Member::find($member)->user_id;
+            Request::create(
+                [
+                    'type' => 2,
+                    'requesting_user_id' => Auth::id(),
+                    'authorizing_user_id' => $user_id,
+                    'member_id' => $member,
+                    'status' => 2,
+                ]
+            );
+        }
+
+
+        return redirect('/requests')->with('success', 'Solicitudes enviadas');
+    }
+
     public function singleRequestAction(\Illuminate\Http\Request $request)
     {
         if ($request->status == 1) {
@@ -95,6 +115,27 @@ class RequestController extends Controller
 
 
         $member->save();
+    }
+
+    public function multipleRequestAction(\Illuminate\Http\Request $request)
+    {
+
+        if ($request->status == 1) {
+            foreach ($request->request_id as $request_id) {
+                RequestController::makeRequestAction($request_id);
+            }
+        }
+
+        foreach ($request->request_id as $request_id) {
+            $requestDetails = Request::find($request_id);
+
+            $requestDetails->status = $request->status;
+
+            $requestDetails->save();
+        }
+        
+
+        return redirect('/requests')->with('success', 'Solicitudes actualizadas');
     }
 
     public function singleRequestCancel(\Illuminate\Http\Request $request)

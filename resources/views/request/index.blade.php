@@ -69,96 +69,125 @@
                             <input type="hidden" name="request_id" id="request_id">
 
                             <input type="hidden" name="status" id="status">
-
-
                         </form>
-                        <table id="authorizeTable" class="table table-striped display nowrap" style="width:100%">
-                            <thead>
-                            <tr>
 
-                                <th>Miembro</th>
-                                <th>Tipo</th>
-                                <th>De</th>
-                                <th>A</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($AuthorizingRequests as $Request)
+
+                        <form action="{{ route('requests.multiple-request-action') }}" method="POST" id="multipleForm">
+                            @csrf
+                            @method('patch')
+
+                            <input type="hidden" name="status" id="status">
+
+                            <div class="d-flex flex-row-reverse mb-5">
+                                <button class="btn btn-danger btn-sm" type="submit"
+                                        onclick="multipleForm(0)">
+                                    Rechazar
+                                </button>
+
+                                <button class="btn btn-success btn-sm mr-3 " type="submit"
+                                        onclick="multipleForm(1)">
+                                    Aceptar
+                                </button>
+
+
+                            </div>
+
+
+                            <table id="authorizeTable" class="table table-striped display nowrap" style="width:100%">
+                                <thead>
                                 <tr>
-
-                                    <td class="align-middle">{{ $Request->member->name }}</td>
-                                    <td class="align-middle">
-                                        @if($Request->type == 1)
-                                            Solicitud
-                                        @else
-                                            Envio
-                                        @endif
-                                    </td>
-                                    <td class="align-middle">
-                                        @if($Request->type == 1)
-                                            {{ $Request->requester->name }}
-                                        @else
-                                            {{ $Request->authorizer->name }}
-                                        @endif
-                                    </td>
-                                    <td class="align-middle">
-                                        @if($Request->type == 1)
-                                            {{ $Request->authorizer->name }}
-                                        @else
-                                            {{ $Request->requester->name }}
-                                        @endif
-                                    </td>
-                                    <td class="align-middle">
-                                        @switch($Request->status)
-                                            @case(1)
-                                                <span class="badge badge-success">Aceptada</span>
-                                                @break
-                                            @case(0)
-                                                <span class="badge badge-danger">Denegada</span>
-                                                @break
-                                            @case(2)
-                                                <span class="badge badge-warning">Pendiente</span>
-                                                @break
-                                            @case(3)
-                                                <span class="badge badge-secondary">Cancelada</span>
-                                                @break
-                                        @endswitch
-                                    </td>
-                                    <td class="align-middle">
-
-                                        @if($Request->status == 2)
-                                            <button class="btn btn-success btn-sm" type="submit"
-                                                    onclick="requestStatus(1, {{$Request->id}})">
-                                                Aceptar
-                                            </button>
-                                            <button class="btn btn-danger btn-sm" type="submit"
-                                                    onclick="requestStatus(0, {{$Request->id}})">
-                                                Rechazar
-                                            </button>
-
-                                        @endif
-
-
-                                    </td>
+                                    <th>#</th>
+                                    <th>Miembro</th>
+                                    <th>Tipo</th>
+                                    <th>De</th>
+                                    <th>A</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
                                 </tr>
+                                </thead>
+                                <tbody>
+                                @foreach ($AuthorizingRequests as $Request)
+                                    <tr>
+                                        <td>
+                                            @if($Request->status == 2)
+                                                <div class="icheck-primary d-inline">
+                                                    <input type="checkbox" name="request_id[]"
+                                                           value="{{ $Request->id }}">
+                                                </div>
+                                            @endif
+                                        </td>
+                                        <td class="align-middle">{{ $Request->member->name }}</td>
+                                        <td class="align-middle">
+                                            @if($Request->type == 1)
+                                                Solicitud
+                                            @else
+                                                Envio
+                                            @endif
+                                        </td>
+                                        <td class="align-middle">
+                                            @if($Request->type == 1)
+                                                {{ $Request->requester->name }}
+                                            @else
+                                                {{ $Request->authorizer->name }}
+                                            @endif
+                                        </td>
+                                        <td class="align-middle">
+                                            @if($Request->type == 1)
+                                                {{ $Request->authorizer->name }}
+                                            @else
+                                                {{ $Request->requester->name }}
+                                            @endif
+                                        </td>
+                                        <td class="align-middle">
+                                            @switch($Request->status)
+                                                @case(1)
+                                                    <span class="badge badge-success">Aceptada</span>
+                                                    @break
+                                                @case(0)
+                                                    <span class="badge badge-danger">Denegada</span>
+                                                    @break
+                                                @case(2)
+                                                    <span class="badge badge-warning">Pendiente</span>
+                                                    @break
+                                                @case(3)
+                                                    <span class="badge badge-secondary">Cancelada</span>
+                                                    @break
+                                            @endswitch
+                                        </td>
+                                        <td class="align-middle">
 
-                            @endforeach
+                                            @if($Request->status == 2)
+                                                <button class="btn btn-success btn-sm" type="submit"
+                                                        onclick="requestStatus(1, {{$Request->id}})">
+                                                    Aceptar
+                                                </button>
+                                                <button class="btn btn-danger btn-sm" type="submit"
+                                                        onclick="requestStatus(0, {{$Request->id}})">
+                                                    Rechazar
+                                                </button>
 
-                            </tbody>
-                            <tfoot>
-                            <tr>
+                                            @endif
 
-                                <th>Miembro</th>
-                                <th>Tipo</th>
-                                <th>De</th>
-                                <th>A</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                            </tfoot>
-                        </table>
+
+                                        </td>
+                                    </tr>
+
+                                @endforeach
+
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Miembro</th>
+                                    <th>Tipo</th>
+                                    <th>De</th>
+                                    <th>A</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </form>
                     </div>
 
                     <div class="tab-pane" id="StatusRequest">
@@ -286,6 +315,26 @@
                 }
             );
         });
+
+        function multipleForm(status) {
+            event.preventDefault(); // prevent form submit
+            var form = event.target.form; // storing the form
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Se enviarán las solicitudes seleccionadas",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+            }).then((result) => {
+                if (result.value === true) {
+                    form.elements["status"].value = status;
+
+                    form.submit();
+                } else {
+                }
+            });
+
+        }
 
 
         function requestStatus(status, request_id) {
