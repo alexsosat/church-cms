@@ -39,7 +39,7 @@ class MemberController extends Controller
     {
         $user = User::find(Auth::id());
 
-        if ($request->user_id !== $user->id && !Gate::allows('is-admin')) {
+        if ((int) $request->user_id !== (int)$user->id && !Gate::allows('is-admin')) {
             return redirect()->back()->withErrors(['msg' => 'Error al crear el miembro']);
         }
 
@@ -73,7 +73,7 @@ class MemberController extends Controller
             $Churches = $Churches->where('id', $user->id);
         }
 
-        return view('member.create.php')->with([
+        return view('member.create')->with([
             'Churches' => $Churches->get(),
         ]);
     }
