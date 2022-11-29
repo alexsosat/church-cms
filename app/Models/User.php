@@ -62,7 +62,7 @@ class User extends Authenticatable
         }
 
 
-        return '/' . $this->image;
+        return $this->image;
     }
 
     public function imagePath(): ?string

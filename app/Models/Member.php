@@ -29,7 +29,7 @@ class Member extends Model
             return asset('img/placeholder.png');
         }
 
-        return '/' . $this->image;
+        return $this->image;
     }
 
     public function imagePath(): ?string
